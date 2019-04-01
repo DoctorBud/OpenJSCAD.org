@@ -29,7 +29,7 @@ function Processor(containerdiv, options) {
     debug: false,
     libraries: [],
     openJsCadPath: '',
-    useAsync: true,
+    useAsync: false,
     useSync: true,
     viewer: {},
   }
@@ -202,7 +202,7 @@ Processor.prototype = {
     //this clears output file cache
     this.clearOutputFile()
 
-    this.setStatus('rendering')
+    this.setStatus('rendering', this);
 
     // rebuild the solid
 

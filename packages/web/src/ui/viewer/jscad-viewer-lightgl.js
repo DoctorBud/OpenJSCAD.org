@@ -33,6 +33,7 @@ LightGLEngine.prototype = {
 
     this.resizeCanvas()
 
+    this.gl.makeCurrent();
     this.gl.viewport(0, 0, canvas.width, canvas.height) // pixels
     this.gl.matrixMode(this.gl.PROJECTION)
     this.gl.loadIdentity()
@@ -101,6 +102,7 @@ LightGLEngine.prototype = {
     this.resetCamera()
 
     this.gl.ondraw = function () {
+      _this.gl.makeCurrent();
       _this.onDraw()
     }
 

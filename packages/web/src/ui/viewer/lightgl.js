@@ -278,6 +278,7 @@ var GL = (function() {
 		// the array but Google Chrome has a maximum number of arguments so the
 		// concatenations are chunked to avoid that limit.
 		compile: function(type) {
+			gl.makeCurrent();
 			var data = [];
 			for(var i = 0, chunk = 10000; i < this.data.length; i += chunk) {
 				data = Array.prototype.concat.apply(data, this.data.slice(i, i + chunk));
@@ -1024,6 +1025,7 @@ var GL = (function() {
 		drawBuffers: function(vertexBuffers, indexBuffer, mode) {
 			// Only construct up the built-in matrices we need for this shader.
 			var used = this.usedMatrices;
+			console.log('drawBuffers', gl.containerId, vertexBuffers);
 			var MVM = gl.modelviewMatrix;
 			var PM = gl.projectionMatrix;
 			var MVMI = (used.MVMI || used.NM) ? MVM.inverse() : null;
@@ -1054,6 +1056,9 @@ var GL = (function() {
 				if(location == -1 || !buffer.buffer)
 					continue;
 				this.attributes[attribute] = location;
+
+				console.log('gl.getParameter(gl.ARRAY_BUFFER_BINDING', gl.getParameter(gl.ARRAY_BUFFER_BINDING), buffer.buffer);
+				gl.makeCurrent();
 				gl.bindBuffer(gl.ARRAY_BUFFER, buffer.buffer);
 				gl.enableVertexAttribArray(location);
 				gl.vertexAttribPointer(location, buffer.buffer.spacing, gl.FLOAT, false, 0, 0);
@@ -1125,6 +1130,7 @@ var GL = (function() {
 		// because it usually causes unintended transparencies in the
 		// canvas.
 		create: function(options) {
+			console.log('create', options);
 			options = options || {};
 			var canvas = options.canvas;
 			if(!canvas) {
@@ -1140,6 +1146,7 @@ var GL = (function() {
 				gl = gl || canvas.getContext('experimental-webgl', options);
 			} catch(e) {}
 			if(!gl) throw 'WebGL not supported';
+			gl.containerId = options.containerId;
 			addMatrixStack();
 			addImmediateMode();
 			//addEventListeners();
@@ -1605,6 +1612,9 @@ var GL = (function() {
 		// called before issuing commands to a different context.
 		(function(context) {
 			gl.makeCurrent = function() {
+				if (gl.containerId !== context.containerId) {
+					console.log('makeCurrent', gl, context);
+				}
 				gl = context;
 			};
 		})(gl);
