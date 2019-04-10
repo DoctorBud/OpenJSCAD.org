@@ -80,7 +80,6 @@ function Processor(containerdiv, options) {
   this.state = 0 // initialized
 
   try {
-    console.log('options', options)
     /**
      * Copy `init` options to this if the value does not
      * already exist.

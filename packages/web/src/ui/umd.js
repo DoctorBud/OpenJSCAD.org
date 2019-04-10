@@ -7,7 +7,6 @@ const AlertUserOfUncaughtExceptions = require('./errorDispatcher')
 const version = require('../../package.json').version
 const Processor = require('../jscad/processor-bare')
 
-var gProcessor = null
 
 /**
  * Initialize a jscad viewer.  You can prevent the processor from creating
@@ -20,9 +19,10 @@ var gProcessor = null
  * @param {JscadViewerOptions} options - options passed to the viewer processor
  */
 function init(viewer, options) {
-  const versionText = 'UMD OpenJSCAD.org Version ' + version
-  console.log('umd init', versionText, options)
+  var gProcessor = null
 
+  const versionText = 'UMD OpenJSCAD.org Version ' + version + ' with Reentrancy Fixes'
+  console.log(versionText);
   // Show all exceptions to the user: // WARNING !! this is not practical at dev time
   AlertUserOfUncaughtExceptions()
 

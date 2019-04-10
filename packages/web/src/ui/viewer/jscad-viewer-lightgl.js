@@ -20,6 +20,7 @@ function LightGLEngine (containerelement, options) {
 
 LightGLEngine.prototype = {
   init: function () {
+    this.gl.makeCurrent()
   // set initial canvas size
     this.gl.canvas.width = this.containerEl.width
     this.gl.canvas.height = this.containerEl.height
@@ -32,6 +33,8 @@ LightGLEngine.prototype = {
     var canvas = this.canvas
 
     this.resizeCanvas()
+
+    this.gl.makeCurrent()
 
     this.gl.viewport(0, 0, canvas.width, canvas.height) // pixels
     this.gl.matrixMode(this.gl.PROJECTION)
@@ -399,6 +402,7 @@ LightGLEngine.prototype = {
   // Convert from CSG solid to an array of GL.Mesh objects
   // limiting the number of vertices per mesh to less than 2^16
   csgToMeshes: function (initial_csg) {
+    this.gl.makeCurrent()
     var csg = initial_csg.canonicalized()
     var mesh = new GL.Mesh({ normals: true, colors: true })
     var meshes = [ mesh ]
